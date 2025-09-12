@@ -1,7 +1,8 @@
 #!/bin/bash
+
 set -euo pipefail
-#安装依赖环境
-# 安装依赖环境
+
+# ===== 安装依赖环境 =====
 sudo apt-get update
 sudo apt-get install -y \
     curl bison flex make binutils dwarves git lld pahole zip perl gcc python3 python-is-python3 \
@@ -10,14 +11,14 @@ sudo apt-get install -y \
 wget -q https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/LLVM-20.1.8-Linux-X64.tar.xz
 tar -Jxf LLVM-20.1.8-Linux-X64.tar.xz
 mv LLVM-20.1.8-Linux-X64 llvm21
-#自定义环境变量
+#===== 自定义环境变量 =====
 source local/build.env
 export PATH=${PWD}/llvm21/bin:${PATH}
 export OUT_DIR=${PWD}/out
 export KERNEL_DIR=${PWD}/common
 export DEFCONFIG_FILE=${KERNEL_DIR}/arch/arm64/configs/gki_defconfig
 
-#下载内核以及补丁
+#===== 下载内核以及补丁 =====
 git clone https://android.googlesource.com/kernel/common -b ${GKI_DEV} --depth=1
 git clone https://github.com/KernelSU-Next/kernel_patches.git --depth=1
 git clone https://gitlab.com/simonpunk/susfs4ksu.git -b ${GKI_VERSION} --depth=1
@@ -74,7 +75,6 @@ CONFIG_KSU_SUSFS_ENABLE_LOG=y
 CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
 CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y
 CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
-CONFIG_LOCALVERSION="-xiaoxian"
 CONFIG_ZRAM_DEF_COMP_LZ4=y
 EOF
 echo "CONFIG_KSU_MANUAL_HOOK=y" >> "$DEFCONFIG_FILE"
