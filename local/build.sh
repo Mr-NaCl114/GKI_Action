@@ -42,7 +42,7 @@ fi
 
 # 判断是否有 -dirty
 if grep -q " -dirty" "$KERNEL_DIR/scripts/setlocalversion"; then
-    sed -i 's/ -dirty//g' "$KERNEL_DIR/scripts/setlocalversion"
+    #sed -i 's/ -dirty//g' "$KERNEL_DIR/scripts/setlocalversion"
     echo "已删除 -dirty"
 else
     echo "-dirty 不存在，不执行修改"
