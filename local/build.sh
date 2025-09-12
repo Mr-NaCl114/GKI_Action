@@ -32,29 +32,30 @@ patch -p1 -d ${KERNEL_DIR} < susfs4ksu/kernel_patches/50_add_susfs_in_${GKI_VERS
 # ===== 删除版本后缀 =====
 echo ">>> 删除内核版本后缀..."
 rm -rf ${KERNEL_DIR}/android/abi_gki_protected_exports_*
+rm ${KERNEL_DIR}/.git -rf
 # 判断 CONFIG_ZRAM=m 是否存在
-if grep -q "^CONFIG_ZRAM=m" "$DEFCONFIG_FILE"; then
-    sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' "$DEFCONFIG_FILE"
+if grep -q "^CONFIG_ZRAM=m" "${DEFCONFIG_FILE}"; then
+    sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' "${DEFCONFIG_FILE}"
     echo "已将 CONFIG_ZRAM=m 修改为 CONFIG_ZRAM=y"
 else
     echo "CONFIG_ZRAM=m 不存在，不执行修改"
 fi
 
 # 判断是否有 -dirty
-if grep -q " -dirty" "$KERNEL_DIR/scripts/setlocalversion"; then
-    sed -i 's/ -dirty//g' "$KERNEL_DIR/scripts/setlocalversion"
+if grep -q " -dirty" "${KERNEL_DIR}/scripts/setlocalversion"; then
+    sed -i 's/ -dirty//g' "${KERNEL_DIR}/scripts/setlocalversion"
     echo "已删除 -dirty"
 else
     echo "-dirty 不存在，不执行修改"
 fi
 
 # 判断是否自动配置文件名
-if grep -q "^CONFIG_LOCALVERSION_AUTO=" "$DEFCONFIG_FILE"; then
+if grep -q "^CONFIG_LOCALVERSION_AUTO=" "${DEFCONFIG_FILE}"; then
     echo "修改取消自动配置后缀"
-    sed -i 's/^CONFIG_LOCALVERSION_AUTO=.*/CONFIG_LOCALVERSION_AUTO=n/' "$DEFCONFIG_FILE"
+    sed -i 's/^CONFIG_LOCALVERSION_AUTO=.*/CONFIG_LOCALVERSION_AUTO=n/' "${DEFCONFIG_FILE}"
 else
     echo "添加取消自动配置后缀"
-    echo "CONFIG_LOCALVERSION_AUTO=n" >> "$DEFCONFIG_FILE"
+    echo "CONFIG_LOCALVERSION_AUTO=n" >> "${DEFCONFIG_FILE}"
 fi
 
 # ===== 拉取 KSU =====
