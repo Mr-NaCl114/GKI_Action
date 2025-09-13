@@ -33,6 +33,7 @@ patch -p1 -d ${KERNEL_DIR} < susfs4ksu/kernel_patches/50_add_susfs_in_${GKI_VERS
 echo ">>> 删除内核版本后缀..."
 rm -rf ${KERNEL_DIR}/android/abi_gki_protected_exports_*
 rm ${KERNEL_DIR}/.git -rf
+
 # 判断 CONFIG_ZRAM=m 是否存在
 if grep -q "^CONFIG_ZRAM=m" "${DEFCONFIG_FILE}"; then
     sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' "${DEFCONFIG_FILE}"
@@ -50,13 +51,13 @@ else
 fi
 
 # 判断是否自动配置文件名
-if grep -q "^CONFIG_LOCALVERSION_AUTO=" "${DEFCONFIG_FILE}"; then
-    echo "修改取消自动配置后缀"
-    sed -i 's/^CONFIG_LOCALVERSION_AUTO=.*/CONFIG_LOCALVERSION_AUTO=n/' "${DEFCONFIG_FILE}"
-else
-    echo "添加取消自动配置后缀"
-    echo "CONFIG_LOCALVERSION_AUTO=n" >> "${DEFCONFIG_FILE}"
-fi
+#if grep -q "^CONFIG_LOCALVERSION_AUTO=" "${DEFCONFIG_FILE}"; then
+#    echo "修改取消自动配置后缀"
+#    sed -i 's/^CONFIG_LOCALVERSION_AUTO=.*/CONFIG_LOCALVERSION_AUTO=n/' "${DEFCONFIG_FILE}"
+#else
+#    echo "添加取消自动配置后缀"
+#    echo "CONFIG_LOCALVERSION_AUTO=n" >> "${DEFCONFIG_FILE}"
+#fi
 
 # ===== 拉取 KSU =====
 if [[ "$KSU_BRANCH" == "y" || "$KSU_BRANCH" == "y" ]]; then
