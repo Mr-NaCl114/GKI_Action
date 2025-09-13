@@ -32,7 +32,7 @@ patch -p1 -d ${KERNEL_DIR} < susfs4ksu/kernel_patches/50_add_susfs_in_${GKI_VERS
 # ===== 删除版本后缀 =====
 echo ">>> 删除内核版本后缀..."
 rm -rf ${KERNEL_DIR}/android/abi_gki_protected_exports_*
-rm ${KERNEL_DIR}/.git -rf
+rm -rf .git
 
 # 判断 CONFIG_ZRAM=m 是否存在
 if grep -q "^CONFIG_ZRAM=m" "${DEFCONFIG_FILE}"; then
